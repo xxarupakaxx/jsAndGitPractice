@@ -1,28 +1,23 @@
-//let http = require("http");
-let ejs = require("ejs");
 let express = require("express");
-let app = express();
-let bodyParser = require("body-parser");
-
+let ejs = require("ejs");
+let app =express();
+//let cookiesParser = require("cookie-parser");
+let cookieParser = require("cookie-parser");
+let js = require("js");
 app.engine("ejs",ejs.renderFile);
+app.use(cookieParser());
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.get("/" ,function(req,res){
-    console.log("---GET---");
-    console.log("nameは" + req.query.name);
-    console.log("ageは" + req.query.age);
-    res.render("temp.ejs",{});
+app.get("/",function(req,res){
+    let cnt = req.cookies.cnt == undefined ? 0: req.cookies.cnt;
+    cnt++;
+    res.cookie("cnt",cnt,{maxAge:5000});
+    res.render("temp.js",{
+        cnt:cnt
+    });
+
+
 });
 
-app.post("/",function(req,res){
-    console.log("--post---");
-    console.log("nameは" +req.body.name);
-    console.log("ageは" +req.body.age);
-    res.render("temp.ejs",{});
-    
+let server = app.listen(1234,"127.0.0.1",function() {
+    console.log("サーバーが起動しました");
 });
-let server = app.listen(1234,"127.0.0.1",function(){
-    console.log("server");
-})
