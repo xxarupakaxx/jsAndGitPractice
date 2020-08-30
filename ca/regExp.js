@@ -1,0 +1,1 @@
+console.log("JavaScript javaScript java".replace(/java(? =Script)/,"Java"));
